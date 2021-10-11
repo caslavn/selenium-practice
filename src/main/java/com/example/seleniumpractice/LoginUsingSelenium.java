@@ -159,8 +159,49 @@ public class LoginUsingSelenium {
             if (val.equalsIgnoreCase(jsonObj[13]))
             {
                 RadioButtonAddress.get(i).click();
-                break;
             }
+
+        }
+        if (jsonObj[13].equalsIgnoreCase("DOC"))
+        {
+            WebElement addressName = driver.findElement(By.id("AUTH.SEND-AUTH.NAME"));
+            WebElement addressStreet = driver.findElement(By.id("AUTH.SEND-ADDRESS-STREET"));
+            WebElement addressZip = driver.findElement(By.id("AUTH.SEND-ADDRESS-ZIPCODE"));
+            WebElement addressCity = driver.findElement(By.id("AUTH.SEND-ADDRESS-CITY"));
+            WebElement addressCountry = driver.findElement(By.id("AUTH.SEND-ADDRESS-COUNTRY"));
+            WebElement addressEmail = driver.findElement(By.id("AUTH.SEND-ADDRESS-EMAIL"));
+
+            addressName.sendKeys(jsonObj[40]);
+            if(jsonObj[40].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            addressStreet.sendKeys(jsonObj[41]);
+            if(jsonObj[41].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            addressZip.sendKeys(jsonObj[42]);
+            if(jsonObj[42].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            addressCity.sendKeys(jsonObj[43]);
+            if(jsonObj[43].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            addressCountry.sendKeys(jsonObj[44]);
+            if(jsonObj[44].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            addressEmail.sendKeys(jsonObj[45]);
+            if(jsonObj[45].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+
         }
         List<WebElement> RadioButtonDeadline = driver.findElements(By.name("OB01.COND.SEND.DEADLINE-RADIO"));
         for(int i=0; i < RadioButtonDeadline.size(); i++)
@@ -203,13 +244,23 @@ public class LoginUsingSelenium {
 
         WebElement projectTitle=driver.findElement(By.id("CONT.NAME"));
         List<WebElement> RadioButtonConstruction = driver.findElements(By.name("CONT.WORK.TYPE-TYPE"));
-        for(int i=0; i < RadioButtonConstruction.size(); i++)
-        {
-            String val = RadioButtonConstruction.get(i).getAttribute("value");
-            if (val.equalsIgnoreCase(jsonObj[37]))
-            {
-                RadioButtonConstruction.get(i).click();
-                break;
+        List<WebElement> RadioButtonSupply = driver.findElements(By.name("CONT.SUPP.TYPE-TYPE"));
+        if(jsonObj[1].equals("WORKS")) {
+            for (int i = 0; i < RadioButtonConstruction.size(); i++) {
+                String val = RadioButtonConstruction.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[39])) {
+                    RadioButtonConstruction.get(i).click();
+                    break;
+                }
+            }
+        }
+        if(jsonObj[1].equals("SUPPLIES")) {
+            for (int i = 0; i < RadioButtonSupply.size(); i++) {
+                String val = RadioButtonSupply.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[46])) {
+                    RadioButtonSupply.get(i).click();
+                    break;
+                }
             }
         }
         projectTitle.sendKeys(jsonObj[17]);
@@ -243,8 +294,6 @@ public class LoginUsingSelenium {
         WebElement cpv=driver.findElement(By.id("CONT.CPV.LIST"));
         WebElement subjectAndScopeOfTheContract=driver.findElement(By.id("CONT.DESCR"));
         WebElement locationOfImplementation=driver.findElement(By.id("CONT.LOC"));
-        WebElement dateStart=driver.findElement(By.id("cal-field-TIMEFRAME-DATE.START"));
-        WebElement dateEnd=driver.findElement(By.id("cal-field-TIMEFRAME-DATE.END"));
         cpv.sendKeys(jsonObj[19]);
         if(jsonObj[19].equals("")) {
             logger.error("CPV can not be null!");
@@ -261,46 +310,142 @@ public class LoginUsingSelenium {
             logger.error("Location of implementation can not be null!");
             throw new RuntimeException("Location of implementation can not be null!");
         }
-        List<WebElement> RadioButtonDuration = driver.findElements(By.name("TIMEFRAME-RADIO"));
-        for(int i=0; i < RadioButtonDuration.size(); i++)
-        {
-            String val = RadioButtonDuration.get(i).getAttribute("value");
-            if (val.equalsIgnoreCase(jsonObj[22]))
-            {
-                RadioButtonDuration.get(i).click();
-                break;
+
+        if(jsonObj[18].equals("NO") || jsonObj[18].equals("NOT_SPECIFIED")) {
+            WebElement dateStart=driver.findElement(By.id("cal-field-TIMEFRAME-DATE.START"));
+            WebElement dateEnd=driver.findElement(By.id("cal-field-TIMEFRAME-DATE.END"));
+            List<WebElement> RadioButtonDuration = driver.findElements(By.name("TIMEFRAME-RADIO"));
+            for (int i = 0; i < RadioButtonDuration.size(); i++) {
+                String val = RadioButtonDuration.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[22])) {
+                    RadioButtonDuration.get(i).click();
+                    break;
+                }
+            }
+            dateStart.sendKeys(jsonObj[23]);
+            if (jsonObj[23].equals("")) {
+                logger.error("Start date can not be null!");
+                throw new RuntimeException("Start date can not be null!");
+            }
+            dateEnd.sendKeys(jsonObj[24]);
+            if (jsonObj[24].equals("")) {
+                logger.error("End date can not be null!");
+                throw new RuntimeException("End date can not be null!");
+            }
+            List<WebElement> RadioButtonOptions = driver.findElements(By.name("OPTION-RADIO"));
+            for (int i = 0; i < RadioButtonOptions.size(); i++) {
+                String val = RadioButtonOptions.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[25])) {
+                    RadioButtonOptions.get(i).click();
+                    break;
+                }
+            }
+            List<WebElement> RadioButtonAward = driver.findElements(By.name("AWARD.CRITERIA-VALUE"));
+            for (int i = 0; i < RadioButtonAward.size(); i++) {
+                String val = RadioButtonAward.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[26])) {
+                    RadioButtonAward.get(i).click();
+                    break;
+                }
             }
         }
-        dateStart.sendKeys(jsonObj[23]);
-        if(jsonObj[23].equals("")) {
-            logger.error("Start date can not be null!");
-            throw new RuntimeException("Start date can not be null!");
-        }
-        dateEnd.sendKeys(jsonObj[24]);
-        if(jsonObj[24].equals("")) {
-            logger.error("End date can not be null!");
-            throw new RuntimeException("End date can not be null!");
-        }
-        List<WebElement> RadioButtonOptions = driver.findElements(By.name("OPTION-RADIO"));
-        for(int i=0; i < RadioButtonOptions.size(); i++)
-        {
-            String val = RadioButtonOptions.get(i).getAttribute("value");
-            if (val.equalsIgnoreCase(jsonObj[25]))
-            {
-                RadioButtonOptions.get(i).click();
-                break;
+        if (jsonObj[18].equals("YES") || jsonObj[18].equals("NOT_SPECIFIED")) {
+            List<WebElement> RadioButtonOffers =driver.findElements(By.name("LOT.SUBMIT-TO"));
+            for (int i = 0; i < RadioButtonOffers.size(); i++) {
+                String val = RadioButtonOffers.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[47])) {
+                    RadioButtonOffers.get(i).click();
+                    break;
+                }
             }
-        }
-        List<WebElement> RadioButtonAward = driver.findElements(By.name("AWARD.CRITERIA-VALUE"));
-        for(int i=0; i < RadioButtonAward.size(); i++)
-        {
-            String val = RadioButtonAward.get(i).getAttribute("value");
-            if (val.equalsIgnoreCase(jsonObj[26]))
-            {
-                RadioButtonAward.get(i).click();
-                break;
+            if (jsonObj[47].equals("MAX")) {
+                WebElement maxCount = driver.findElement(By.id("LOT.SUBMIT-MAXCOUNT"));
+                maxCount.sendKeys(jsonObj[48]); //BROJ MORA BITI MANJI OD UKUPNOG BROJA DODATIH LOTOVA PUTEM NOVE STRANE
+                if (jsonObj[48].equals("")) {
+                    logger.error("Required field not filled!");
+                    throw new RuntimeException("Required field not filled!");
+                }
             }
+
         }
+        if (jsonObj[18].equals("YES")) {
+            // DODAVANJE PODATAKA (LOTOVA) -> MINIMUM DVA PUTA, A MAKSIMUM KOLIKO PUTA SE KLIKNE NA DUGME ZA OTVARANJE STRANE
+            //AKO SE NA NOVOJ STRANI ZA PARTIJU DODA NEKI NOVI CPV MORA DA SE DODA I NA GLAVNU 4.
+            /*ZA SVAKU NOVU STRANU (KAD GOD SE KLIKNE NA DUGME ZA DODAVANJE) RAZLICITI SU NAZIVI POLJA
+             (NPR. ZA PRVI LOT JE LOT.CPV.LIST_1, A ZA DRUGI LOT.CPV.LIST_2... )*/
+            //PRVO POLJE (REDNI BROJ PARTIJE) NA NOVOJ STRANICI JE AUTOINCREMENT
+            WebElement addLots = driver.findElement(By.name("eid=10&amp;action=LOT-ADD"));
+            addLots.click();
+            WebElement cpvList2 = driver.findElement(By.name("LOT.CPV.LIST_1"));
+            cpvList2.sendKeys(jsonObj[49]);
+            if(jsonObj[49].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            WebElement descr2 = driver.findElement(By.name("LOT.DESCR_1"));
+            descr2.sendKeys(jsonObj[50]);
+            if(jsonObj[50].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            List<WebElement> RadioButtonLotTimeFrame =driver.findElements(By.name("LOT.TIMEFRAME-RADIO"));
+            for (int i = 0; i < RadioButtonLotTimeFrame.size(); i++) {
+                String val = RadioButtonLotTimeFrame.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[51])) {
+                    RadioButtonLotTimeFrame.get(i).click();
+                    break;
+                }
+            }
+            WebElement lotDateStart2 = driver.findElement(By.name("LOT.TIMEFRAME-DATE.START_1"));
+            lotDateStart2.sendKeys(jsonObj[52]);
+            if(jsonObj[52].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            WebElement lotDateEnd2 = driver.findElement(By.name("LOT.TIMEFRAME-DATE.END_1"));
+            lotDateEnd2.sendKeys(jsonObj[53]);
+            if(jsonObj[53].equals("")) {
+                logger.error("Required field not filled!");
+                throw new RuntimeException("Required field not filled!");
+            }
+            List<WebElement> RadioButtonLotRenewal=driver.findElements(By.name("LOT.RENEWAL-RADIO"));
+            for (int i = 0; i < RadioButtonLotRenewal.size(); i++) {
+                String val = RadioButtonLotRenewal.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[54])) {
+                    RadioButtonLotRenewal.get(i).click();
+                    break;
+                }
+            }
+            List<WebElement> RadioButtonLotOption=driver.findElements(By.name("LOT.OPTION-RADIO"));
+            for (int i = 0; i < RadioButtonLotOption.size(); i++) {
+                String val = RadioButtonLotOption.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[55])) {
+                    RadioButtonLotOption.get(i).click();
+                    break;
+                }
+            }
+            List<WebElement> RadioButtonLotAwardCriteria=driver.findElements(By.name("LOT.AWARD.CRITERIA-VALUE"));
+            for (int i = 0; i < RadioButtonLotAwardCriteria.size(); i++) {
+                String val = RadioButtonLotAwardCriteria.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[56])) {
+                    RadioButtonLotAwardCriteria.get(i).click();
+                    break;
+                }
+            }
+            WebElement page4Back = driver.findElement(By.xpath("//*[@id=\"formShab\"]/div[1]/div[3]/input[2]"));
+            page4Back.click();
+            WebElement page4BackCheck = driver.findElement(By.className("orange"));
+            if(!Objects.equals(page4BackCheck.getText(), "Schritt 4")) {
+                String errormsg = driver.findElement(By.className("fieldsetErrorMsg")).getText();
+                if (errormsg != "") {
+                    logger.error(errormsg);
+                    throw new RuntimeException(errormsg);
+                }
+            }
+            else logger.info("Lot successfully added!");
+        }
+
+
         WebElement page5=driver.findElement(By.xpath("//*[@id=\"formShab\"]/div[1]/div[3]/input[2]"));
         page5.click();
 
@@ -314,9 +459,6 @@ public class LoginUsingSelenium {
         }
         else logger.info("Fourth page done!");
 
-
-        WebElement implementationDateStart=driver.findElement(By.id("cal-field-CONT.DATE.START"));
-        WebElement implementationDateEnd=driver.findElement(By.id("cal-field-CONT.DATE.END"));
         List<WebElement> RadioButtonVariants = driver.findElements(By.name("CONT.VARIANTS"));
         for(int i=0; i < RadioButtonVariants.size(); i++)
         {
@@ -337,28 +479,39 @@ public class LoginUsingSelenium {
                 break;
             }
         }
-        List<WebElement> RadioButtonContDeadline = driver.findElements(By.name("CONT.DEADLINE-RADIO"));
-        for(int i=0; i < RadioButtonContDeadline.size(); i++)
-        {
-            String val = RadioButtonContDeadline.get(i).getAttribute("value");
-            if (val.equalsIgnoreCase(jsonObj[29]))
+        if(jsonObj[18].equals("NO")) {
+            List<WebElement> RadioButtonContDeadline = driver.findElements(By.name("CONT.DEADLINE-RADIO"));
+            for(int i=0; i < RadioButtonContDeadline.size(); i++)
             {
-                RadioButtonContDeadline.get(i).click();
-                break;
+                String val = RadioButtonContDeadline.get(i).getAttribute("value");
+                if (val.equalsIgnoreCase(jsonObj[29]))
+                {
+                    RadioButtonContDeadline.get(i).click();
+                    break;
+                }
+            }
+            WebElement implementationDateStart = driver.findElement(By.id("cal-field-CONT.DATE.START"));
+            WebElement implementationDateEnd = driver.findElement(By.id("cal-field-CONT.DATE.END"));
+            implementationDateStart.sendKeys(jsonObj[30]);
+            if (jsonObj[30].equals("")) {
+                logger.error("Start date of implementation can not be null!");
+                throw new RuntimeException("Start date of implementation can not be null!");
+            }
+            implementationDateEnd.sendKeys(jsonObj[31]);
+            if (jsonObj[31].equals("")) {
+                logger.error("End date of implementation can not be null!");
+                throw new RuntimeException("End date of implementation can not be null!");
             }
         }
-        implementationDateStart.sendKeys(jsonObj[30]);
-        if(jsonObj[30].equals("")) {
-            logger.error("Start date of implementation can not be null!");
-            throw new RuntimeException("Start date of implementation can not be null!");
+        if(jsonObj[18].equals("NO")) {
+
+            WebElement page6 = driver.findElement(By.xpath("//*[@id=\"formShab\"]/div[1]/div[5]/input[2]"));
+            page6.click();
         }
-        implementationDateEnd.sendKeys(jsonObj[31]);
-        if(jsonObj[31].equals("")) {
-            logger.error("End date of implementation can not be null!");
-            throw new RuntimeException("End date of implementation can not be null!");
+        else {
+            WebElement page6 = driver.findElement(By.xpath("//*[@id=\"formShab\"]/div[1]/div[4]/input[2]"));
+            page6.click();
         }
-        WebElement page6=driver.findElement(By.xpath("//*[@id=\"formShab\"]/div[1]/div[5]/input[2]"));
-        page6.click();
 
         WebElement page6Check = driver.findElement(By.className("orange"));
         if(!Objects.equals(page6Check.getText(), "Schritt 6")) {
@@ -403,6 +556,7 @@ public class LoginUsingSelenium {
         procedureLanguage.click();
 
         WebElement page7 = driver.findElement(By.xpath("//*[@id=\"formShab\"]/div[1]/div[6]/input[2]"));
+
         page7.click();
 
         WebElement page7Check = driver.findElement(By.className("orange"));
@@ -506,9 +660,39 @@ public class LoginUsingSelenium {
             String tenderingDocumentationSource = (String) data.get("OB01.COND.DOC.SIMAP-VALUE");
             String proceduresForAppeal = (String) data.get("OB01.INFO.LEGAL");
             String construction = (String) data.get("CONT.WORK.TYPE-TYPE");
+            String addressName = (String) data.get("AUTH.SEND-AUTH.NAME");
+            String addressStreet = (String) data.get("AUTH.SEND-ADDRESS-STREET");
+            Long addressZip = (Long) data.get("AUTH.SEND-ADDRESS-ZIPCODE");
+            String addressCity = (String) data.get("AUTH.SEND-ADDRESS-CITY");
+            String addressCountry = (String) data.get("AUTH.SEND-ADDRESS-COUNTRY");
+            String addressEmail = (String) data.get("AUTH.SEND-ADDRESS-EMAIL");
+            String supplyOrderType = (String) data.get("CONT.SUPP.TYPE-TYPE");
+            String offersPossibleFor = (String) data.get("LOT.SUBMIT-TO");
+            Long maxCount = (Long) data.get("LOT.SUBMIT-MAXCOUNT");
+            Long cpvList2 = (Long) data.get("LOT.CPV.LIST_1");
+            String descr2 = (String) data.get("LOT.DESCR_1") ;
+            String lotTimeFrame = (String) data.get("LOT.TIMEFRAME-RADIO");
+            String lotStartDate = (String) data.get("LOT.TIMEFRAME-DATE.START_1");
+            String lotEndDate = (String) data.get("LOT.TIMEFRAME-DATE.END_1");
+            String lotRenewal = (String) data.get("LOT.RENEWAL-RADIO");
+            String lotOption = (String) data.get("LOT.OPTION-RADIO");
+            String lotAwardCriteria = (String) data.get("LOT.AWARD.CRITERIA-VALUE");
 
 
-            arr[i] = fileReference+","+typeOfOrder+","+typeOfProcedure+","+scopeOfInternationalTreaties+","+desiredDateOfPublication+","+contractingAuthority+","+canton+","+organizer+","+addressOfCA+","+postalCodeOfCA+","+city+","+countryOfCA+","+emailOfCA+","+addressForSendingOffers+","+date+","+submittingDeadline+","+dateOfTheOpeningOfBids+","+projectTitle+","+divisionIntoLots+","+cpv+","+subjectAndScopeOfTheContract+","+locationOfImplementation+","+duration+","+startDate+","+endDate+","+options+","+awardCriteria+","+willBeAccepted+","+partialOffersPermitted+","+contDeadlineRadio+","+implementationDateStart+","+implementationDateEnd+","+eligibilityCriteria+","+evidenceRequired+","+languagesOffers+","+languageProcedure+","+tenderingDocumentationSource+","+proceduresForAppeal+","+construction;
+            arr[i] = fileReference+","+typeOfOrder+","+typeOfProcedure+","+scopeOfInternationalTreaties+
+                    ","+desiredDateOfPublication+","+contractingAuthority+","+canton+
+                    ","+organizer+","+addressOfCA+","+postalCodeOfCA+","+city+","+countryOfCA+
+                    ","+emailOfCA+","+addressForSendingOffers+","+date+","+submittingDeadline+
+                    ","+dateOfTheOpeningOfBids+","+projectTitle+","+divisionIntoLots+","+cpv+
+                    ","+subjectAndScopeOfTheContract+ ","+locationOfImplementation+","+duration+
+                    ","+startDate+","+endDate+","+options+","+awardCriteria+","+willBeAccepted+
+                    ","+partialOffersPermitted+","+contDeadlineRadio+","+implementationDateStart+
+                    ","+implementationDateEnd+","+eligibilityCriteria+","+evidenceRequired+
+                    ","+languagesOffers+","+languageProcedure+","+tenderingDocumentationSource+
+                    ","+proceduresForAppeal+","+construction+","+addressName+","+addressStreet+
+                    ","+addressZip+","+addressCity+","+addressCountry+","+addressEmail+","+supplyOrderType+
+                    ","+offersPossibleFor+","+maxCount+","+cpvList2+","+descr2+","+lotTimeFrame+
+                    ","+lotStartDate+","+lotEndDate+","+lotRenewal+","+lotOption+","+lotAwardCriteria;
         }
 
         return arr;
