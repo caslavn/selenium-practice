@@ -1,7 +1,6 @@
 package com.example.seleniumpractice.service;
 
 import com.example.seleniumpractice.dto.ClientDTO;
-import com.example.seleniumpractice.pagefactory.SimapLoginFactory;
 import com.example.seleniumpractice.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +13,6 @@ public class ClientService {
 
     @Autowired
     ClientRepository clientRepository;
-
-    //@Autowired
-    SimapLoginFactory simapLoginFactory;
-
 
     public List<ClientDTO> getClient() {
 

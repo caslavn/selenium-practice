@@ -1,6 +1,7 @@
-package test;
+package com.example.seleniumpractice.test;
 
-import login.LoginPF;
+import com.example.seleniumpractice.login.LoginPF;
+import com.example.seleniumpractice.pages.*;
 import org.apache.log4j.PropertyConfigurator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -11,7 +12,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import pages.*;
 
 import java.io.FileReader;
 import java.io.IOException;
