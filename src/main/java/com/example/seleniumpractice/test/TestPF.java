@@ -1,20 +1,19 @@
 package com.example.seleniumpractice.test;
 
 import com.example.seleniumpractice.login.LoginPF;
+import com.example.seleniumpractice.model.TenderDetails;
 import com.example.seleniumpractice.pages.*;
+import io.restassured.RestAssured;
+
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import org.apache.log4j.PropertyConfigurator;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.FileReader;
-import java.io.IOException;
 
 public class TestPF {
 
@@ -34,186 +33,118 @@ public class TestPF {
         PropertyConfigurator.configure("src/main/resources/log4j.properties");
 
         System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromerdriver");
-        /* ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");*/
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
         driver = new ChromeDriver();
         driver.get("https://www.schulung.simap.ch/shabforms/COMMON/login/login.jsf?view=3&GO=Projectmanager");
     }
 
-    @Test(dataProvider="dp")
-    public void testForm(String datas) {
-        String jsonObj[]=datas.split(",");
+    @Test
+    public void testForm() {
+
+        Response response = RestAssured.get("http://localhost:8080/api/tender");
+        //System.out.println("Status code is: " +response.getStatusCode());
+        //System.out.println(response.asPrettyString());
+        TenderDetails[] tenders = response.jsonPath().getObject("", TenderDetails[].class);
+
+        JsonPath jsonPath = response.jsonPath();
 
         objLogin = new LoginPF(driver);
         objLogin.loginToSimap("olmero-test", "jbZVF659aNYrkMp");
 
+        // System.out.println(jsonPath.getString("find{it.field == 'NOTICE.REF'}.value"));
+
         objPageOne = new PageOne(driver);
-        objPageOne.fillInPageOne(jsonObj[0], jsonObj[1], jsonObj[2], jsonObj[3], jsonObj[4] );
+        objPageOne.fillInPageOne(jsonPath.getString("find{it.field == 'NOTICE.REF'}.value"), jsonPath.getString("find{it.field == 'OB.CONT.TYPE'}.value"),
+                jsonPath.getString("find{it.field == 'OB.PROC'}.value"), jsonPath.getString("find{it.field == 'OB.WTO'}.value"),
+                jsonPath.getString("find{it.field == 'SIMAP.PUB.DATE'}.value"));
 
         objPageTwo = new PageTwo(driver);
-        objPageTwo.fillInPageTwo(jsonObj[5], jsonObj[6], jsonObj[7], jsonObj[8], jsonObj[9], jsonObj[10], jsonObj[11],
-                jsonObj[12], jsonObj[13], jsonObj[14], jsonObj[16]);
-        if (jsonObj[14].equalsIgnoreCase("DATE")) {
-            objPageTwo.fillInDeadlineDate(jsonObj[15]);
+        objPageTwo.fillInPageTwo(jsonPath.getString("find{it.field == 'AUTH.CONTACT-AUTH.DEMAND'}.value"),
+                jsonPath.getString("find{it.field == 'AUTH.CONTACT-AUTH.CANTONCODE'}.value"),
+                jsonPath.getString("find{it.field == 'AUTH.CONTACT-AUTH.NAME'}.value"),
+                jsonPath.getString("find{it.field == 'AUTH.CONTACT-ADDRESS-STREET'}.value"),
+                jsonPath.getString("find{it.field == 'AUTH.CONTACT-ADDRESS-ZIPCODE'}.value"),
+                jsonPath.getString("find{it.field == 'AUTH.CONTACT-ADDRESS-CITY'}.value"),
+                jsonPath.getString("find{it.field == 'AUTH.CONTACT-ADDRESS-COUNTRY'}.value"),
+                jsonPath.getString("find{it.field == 'AUTH.CONTACT-ADDRESS-EMAIL'}.value"),
+                jsonPath.getString("find{it.field == 'AUTH.SEND-TYPE'}.value"),
+                jsonPath.getString("find{it.field == 'OB01.COND.SEND.DEADLINE-RADIO'}.value"),
+                jsonPath.getString("find{it.field == 'OB01.COND.OFFER.OPEN.DATE'}.value"));
+        if (jsonPath.getString("find{it.field == 'OB01.COND.SEND.DEADLINE-RADIO'}.value").equalsIgnoreCase("DATE")) {
+            objPageTwo.fillInDeadlineDate(jsonPath.getString("find{it.field == 'OB01.COND.SEND.DEADLINE.DATE'}.value"));
         }
-        if (jsonObj[14].equalsIgnoreCase("DAYS")) {
-            objPageTwo.fillInDeadlineDays(jsonObj[57]);
+        if (jsonPath.getString("find{it.field == 'OB01.COND.SEND.DEADLINE-RADIO'}.value").equalsIgnoreCase("DAYS")) {
+            objPageTwo.fillInDeadlineDays(jsonPath.getString("find{it.field == 'TIMEFRAME-MONTHS'}.value"));
         }
-        if (jsonObj[13].equalsIgnoreCase("DOC")) {
-            objPageTwo.fillInAddressInfo(jsonObj[40], jsonObj[41], jsonObj[42], jsonObj[43], jsonObj[44], jsonObj[45]);
+        if (jsonPath.getString("find{it.field == 'AUTH.SEND-TYPE'}.value").equalsIgnoreCase("DOC")) {
+            objPageTwo.fillInAddressInfo(jsonPath.getString("find{it.field == 'AUTH.SEND-TYPE'}.value"),
+                    jsonPath.getString("find{it.field == 'AUTH.SEND-ADDRESS-STREET'}.value"),
+                    jsonPath.getString("find{it.field == 'AUTH.SEND-ADDRESS-ZIPCODE'}.value"),
+                    jsonPath.getString("find{it.field == 'AUTH.SEND-ADDRESS-CITY'}.value"),
+                    jsonPath.getString("find{it.field == 'AUTH.SEND-ADDRESS-COUNTRY'}.value"),
+                    jsonPath.getString("find{it.field == 'AUTH.SEND-ADDRESS-EMAIL'}.value"));
         }
         objPageTwo.goToPage3();
 
         objPageThree = new PageThree(driver);
-        if (jsonObj[1].equalsIgnoreCase("WORKS")) {
-            objPageThree.fillConstruction(jsonObj[39]);
+        if (jsonPath.getString("find{it.field == 'OB.CONT.TYPE'}.value").equalsIgnoreCase("WORKS")) {
+            objPageThree.fillConstruction(jsonPath.getString("find{it.field == 'AUTH.SEND-AUTH.NAME'}.value"));
         }
-        if (jsonObj[1].equalsIgnoreCase("SUPPLIES")) {
-            objPageThree.fillSupply(jsonObj[46]);
+        if (jsonPath.getString("find{it.field == 'OB.CONT.TYPE'}.value").equalsIgnoreCase("SUPPLIES")) {
+            objPageThree.fillSupply(jsonPath.getString("find{it.field == 'LOT.SUBMIT-TO'}.value"));
         }
-        objPageThree.fillInPageThree(jsonObj[17], jsonObj[18]);
+        objPageThree.fillInPageThree(jsonPath.getString("find{it.field == 'CONT.NAME'}.value"),
+                jsonPath.getString("find{it.field == 'DIVISION.INTO.LOT'}.value"));
 
         objPageFour = new PageFour(driver);
-        if (jsonObj[18].equals("NO") || jsonObj[18].equals("NOT_SPECIFIED")) {
-            objPageFour.fillCaseOne(jsonObj[22], jsonObj[25], jsonObj[26]);
-            if (jsonObj[22].equalsIgnoreCase("DATE")) {
-                objPageFour.fillInTimeFrameDate(jsonObj[23], jsonObj[24]);
+        if (jsonPath.getString("find{it.field == 'DIVISION.INTO.LOT'}.value").equals("NO") || jsonPath.getString("find{it.field == 'DIVISION.INTO.LOT'}.value").equals("NOT_SPECIFIED")) {
+            objPageFour.fillCaseOne(jsonPath.getString("find{it.field == 'TIMEFRAME-RADIO'}.value"),
+                    jsonPath.getString("find{it.field == 'OPTION-RADIO'}.value"),
+                    jsonPath.getString("find{it.field == 'AWARD.CRITERIA-VALUE'}.value"));
+            if (jsonPath.getString("find{it.field == 'TIMEFRAME-RADIO'}.value").equalsIgnoreCase("DATE")) {
+                objPageFour.fillInTimeFrameDate(jsonPath.getString("find{it.field == 'TIMEFRAME-DATE.START'}.value"),
+                        jsonPath.getString("find{it.field == 'TIMEFRAME-DATE.END'}.value"));
             }
-            if (jsonObj[22].equalsIgnoreCase("PERIOD")) {
-                objPageFour.fillInTimeFrameMonths(jsonObj[58]);
-            }
-        }
-        if (jsonObj[18].equals("YES") || jsonObj[18].equals("NOT_SPECIFIED")) {
-            objPageFour.fillCaseTwo(jsonObj[47]);
-            if (jsonObj[47].equalsIgnoreCase("MAX")) {
-                objPageFour.fillMaxCount(jsonObj[48]);
+            if (jsonPath.getString("find{it.field == 'TIMEFRAME-RADIO'}.value").equalsIgnoreCase("PERIOD")) {
+                objPageFour.fillInTimeFrameMonths(jsonPath.getString("find{it.field == 'CONT.MONTHS'}.value"));
             }
         }
-        objPageFour.fillInPageFour(jsonObj[19], jsonObj[20], jsonObj[21]);
+        if (jsonPath.getString("find{it.field == 'DIVISION.INTO.LOT'}.value").equals("YES") || jsonPath.getString("find{it.field == 'DIVISION.INTO.LOT'}.value").equals("NOT_SPECIFIED")) {
+            objPageFour.fillCaseTwo(jsonPath.getString("find{it.field == 'LOT.SUBMIT-MAXCOUNT'}.value"));
+            if (jsonPath.getString("find{it.field == 'LOT.SUBMIT-MAXCOUNT'}.value").equalsIgnoreCase("MAX")) {
+                objPageFour.fillMaxCount(jsonPath.getString("find{it.field == 'LOT.CPV.LIST_1'}.value"));
+            }
+        }
+        objPageFour.fillInPageFour(jsonPath.getString("find{it.field == 'CONT.CPV.LIST'}.value"), jsonPath.getString("find{it.field == 'CONT.DESCR'}.value"),
+                jsonPath.getString("find{it.field == 'CONT.LOC'}.value"));
 
         objPageFive = new PageFive(driver);
-        objPageFive.fillPageFive(jsonObj[27], jsonObj[28]);
-        if (jsonObj[18].equalsIgnoreCase("NO")) {
-            objPageFive.fillCase(jsonObj[29]);
-            if(jsonObj[29].equalsIgnoreCase("DATE")) {
-                objPageFive.fillInContDate(jsonObj[30], jsonObj[31]);
+        objPageFive.fillPageFive(jsonPath.getString("find{it.field == 'CONT.VARIANTS'}.value"), jsonPath.getString("find{it.field == 'CONT.PARTIALS'}.value"));
+        if (jsonPath.getString("find{it.field == 'DIVISION.INTO.LOT'}.value").equalsIgnoreCase("NO")) {
+            objPageFive.fillCase(jsonPath.getString("find{it.field == 'CONT.DEADLINE-RADIO'}.value"));
+            if (jsonPath.getString("find{it.field == 'CONT.DEADLINE-RADIO'}.value").equalsIgnoreCase("DATE")) {
+                objPageFive.fillInContDate(jsonPath.getString("find{it.field == 'CONT.DATE.START'}.value"), jsonPath.getString("find{it.field == 'CONT.DATE.END'}.value"));
             }
-            if (jsonObj[29].equalsIgnoreCase("PERIOD")) {
-                objPageFive.fillInContMonths(jsonObj[59]);
+            if (jsonPath.getString("find{it.field == 'CONT.DEADLINE-RADIO'}.value").equalsIgnoreCase("PERIOD")) {
+                objPageFive.fillInContMonths(jsonPath.getString("find{it.field == 'OB01.COND.DOC.ADDRESS-VALUE'}.value"));
             }
             objPageFive.openPage6First();
-        }
-        else {
+        } else {
             objPageFive.openPage6Second();
         }
 
         objPageSix = new PageSix(driver);
-        objPageSix.fillInPageSix(jsonObj[32], jsonObj[33]);
+        objPageSix.fillInPageSix(jsonPath.getString("find{it.field == 'OB01.COND.TECHNICAL-VALUE'}.value"),
+                jsonPath.getString("find{it.field == 'OB01.COND.PROOF-VALUE'}.value"));
 
         objPageSeven = new PageSeven(driver);
         objPageSeven.fillInPageSeven();
 
         objPageEight = new PageEight(driver);
-        objPageEight.fillInPageEight(jsonObj[37]);
+        objPageEight.fillInPageEight(jsonPath.getString("find{it.field == 'OB01.INFO.LEGAL'}.value"));
+
 
     }
-
-    @DataProvider(name="dp")
-    public String[] readJson() throws IOException, ParseException {
-        JSONParser jsonParser = new JSONParser();
-        FileReader reader = new FileReader("/home/dev987/IdeaProjects/selenium-practice/jsonfiles/simap.json");
-
-        Object obj = jsonParser.parse(reader);
-
-        JSONObject jsonObj = (JSONObject) obj;
-        JSONArray jsonArray = (JSONArray) jsonObj.get("form");
-
-        String arr[] = new String[jsonArray.size()];
-
-        for (int i=0; i<jsonArray.size(); i++)
-        {
-            JSONObject data = (JSONObject) jsonArray.get(i);
-            String fileReference = (String) data.get("NOTICE.REF");
-            String typeOfOrder = (String) data.get("OB.CONT.TYPE");
-            String typeOfProcedure = (String) data.get("OB.PROC");
-            String scopeOfInternationalTreaties = (String) data.get("OB.WTO");
-            String desiredDateOfPublication = (String) data.get("SIMAP.PUB.DATE");
-            String contractingAuthority = (String) data.get("AUTH.CONTACT-AUTH.DEMAND");
-            String canton = (String) data.get("AUTH.CONTACT-AUTH.CANTONCODE");
-            String organizer = (String) data.get("AUTH.CONTACT-AUTH.NAME");
-            String addressOfCA = (String) data.get("AUTH.CONTACT-ADDRESS-STREET");
-            Long postalCodeOfCA = (Long) data.get("AUTH.CONTACT-ADDRESS-ZIPCODE");
-            String city = (String) data.get("AUTH.CONTACT-ADDRESS-CITY");
-            String countryOfCA = (String) data.get("AUTH.CONTACT-ADDRESS-COUNTRY");
-            String emailOfCA = (String) data.get("AUTH.CONTACT-ADDRESS-EMAIL");
-            String addressForSendingOffers = (String) data.get("AUTH.SEND-TYPE");
-            String date = (String) data.get("OB01.COND.SEND.DEADLINE-RADIO");
-            String submittingDeadline = (String) data.get("OB01.COND.SEND.DEADLINE.DATE");
-            String dateOfTheOpeningOfBids = (String) data.get("OB01.COND.OFFER.OPEN.DATE");
-            String projectTitle = (String) data.get("CONT.NAME");
-            String divisionIntoLots = (String) data.get("DIVISION.INTO.LOT");
-            Long cpv = (Long) data.get("CONT.CPV.LIST");
-            String subjectAndScopeOfTheContract = (String) data.get("CONT.DESCR");
-            String locationOfImplementation = (String) data.get("CONT.LOC");
-            String duration = (String) data.get("TIMEFRAME-RADIO");
-            String startDate = (String) data.get("TIMEFRAME-DATE.START");
-            String endDate = (String) data.get("TIMEFRAME-DATE.END");
-            String options = (String) data.get("OPTION-RADIO");
-            String awardCriteria = (String) data.get("AWARD.CRITERIA-VALUE");
-            String willBeAccepted = (String) data.get("CONT.VARIANTS");
-            String partialOffersPermitted = (String) data.get("CONT.PARTIALS");
-            String contDeadlineRadio = (String) data.get("CONT.DEADLINE-RADIO");
-            String implementationDateStart = (String) data.get("CONT.DATE.START");
-            String implementationDateEnd = (String) data.get("CONT.DATE.END");
-            String eligibilityCriteria = (String) data.get("OB01.COND.TECHNICAL-VALUE");
-            String evidenceRequired = (String) data.get("OB01.COND.PROOF-VALUE");
-            String languagesOffers = (String) data.get("LANGUAGE.EC-EN");
-            String languageProcedure = (String) data.get("LANGUAGE.PROC.EC-EN");
-            String simapValue = (String) data.get("OB01.COND.DOC.SIMAP-VALUE");
-            String proceduresForAppeal = (String) data.get("OB01.INFO.LEGAL");
-            String construction = (String) data.get("CONT.WORK.TYPE-TYPE");
-            String addressName = (String) data.get("AUTH.SEND-AUTH.NAME");
-            String addressStreet = (String) data.get("AUTH.SEND-ADDRESS-STREET");
-            Long addressZip = (Long) data.get("AUTH.SEND-ADDRESS-ZIPCODE");
-            String addressCity = (String) data.get("AUTH.SEND-ADDRESS-CITY");
-            String addressCountry = (String) data.get("AUTH.SEND-ADDRESS-COUNTRY");
-            String addressEmail = (String) data.get("AUTH.SEND-ADDRESS-EMAIL");
-            String supplyOrderType = (String) data.get("CONT.SUPP.TYPE-TYPE");
-            String offersPossibleFor = (String) data.get("LOT.SUBMIT-TO");
-            Long maxCount = (Long) data.get("LOT.SUBMIT-MAXCOUNT");
-            Long cpvList2 = (Long) data.get("LOT.CPV.LIST_1");
-            String descr2 = (String) data.get("LOT.DESCR_1") ;
-            String lotTimeFrame = (String) data.get("LOT.TIMEFRAME-RADIO");
-            String lotStartDate = (String) data.get("LOT.TIMEFRAME-DATE.START_1");
-            String lotEndDate = (String) data.get("LOT.TIMEFRAME-DATE.END_1");
-            String lotRenewal = (String) data.get("LOT.RENEWAL-RADIO");
-            String lotOption = (String) data.get("LOT.OPTION-RADIO");
-            String lotAwardCriteria = (String) data.get("LOT.AWARD.CRITERIA-VALUE");
-            Long days = (Long) data.get("OB01.COND.SEND.DEADLINE.DAYS");
-            Long timeFrameMonths = (Long) data.get("TIMEFRAME-MONTHS");
-            Long contMonths = (Long) data.get("CONT.MONTHS");
-            String addressValue = (String) data.get("OB01.COND.DOC.ADDRESS-VALUE");
-
-
-            arr[i] = fileReference+","+typeOfOrder+","+typeOfProcedure+","+scopeOfInternationalTreaties+
-                    ","+desiredDateOfPublication+","+contractingAuthority+","+canton+
-                    ","+organizer+","+addressOfCA+","+postalCodeOfCA+","+city+","+countryOfCA+
-                    ","+emailOfCA+","+addressForSendingOffers+","+date+","+submittingDeadline+
-                    ","+dateOfTheOpeningOfBids+","+projectTitle+","+divisionIntoLots+","+cpv+
-                    ","+subjectAndScopeOfTheContract+ ","+locationOfImplementation+","+duration+
-                    ","+startDate+","+endDate+","+options+","+awardCriteria+","+willBeAccepted+
-                    ","+partialOffersPermitted+","+contDeadlineRadio+","+implementationDateStart+
-                    ","+implementationDateEnd+","+eligibilityCriteria+","+evidenceRequired+
-                    ","+languagesOffers+","+languageProcedure+","+simapValue+
-                    ","+proceduresForAppeal+","+construction+","+addressName+","+addressStreet+
-                    ","+addressZip+","+addressCity+","+addressCountry+","+addressEmail+","+supplyOrderType+
-                    ","+offersPossibleFor+","+maxCount+","+cpvList2+","+descr2+","+lotTimeFrame+
-                    ","+lotStartDate+","+lotEndDate+","+lotRenewal+","+lotOption+","+lotAwardCriteria+","+days+
-                    ","+timeFrameMonths+","+contMonths+","+addressValue;
-        }
-
-        return arr;
-
-    }
-
 }
+
