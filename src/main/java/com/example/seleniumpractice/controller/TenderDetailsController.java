@@ -2,7 +2,7 @@ package com.example.seleniumpractice.controller;
 
 import com.example.seleniumpractice.dto.TenderDTO;
 import com.example.seleniumpractice.dto.TenderDetailsDTO;
-import com.example.seleniumpractice.service.TenderDetailsService;
+import com.example.seleniumpractice.readfactory.ReadingFactory;
 import com.example.seleniumpractice.service.TenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,16 +17,17 @@ import java.util.List;
 public class TenderDetailsController {
 
     @Autowired
-    TenderDetailsService tenderDetailsService;
-    @Autowired
     TenderService tenderService;
+    @Autowired
+    ReadingFactory readingFactory;
 
-    @GetMapping
+    @GetMapping("/details")
     public List<TenderDetailsDTO> getAllTenderDetails(@RequestParam(value = "id", required = false) Integer id) {
-        return tenderDetailsService.getAllTenderDetails();
+
+        return readingFactory.getRead();
     }
 
-    @GetMapping("/ten")
+    @GetMapping
     public List<TenderDTO> getAllTenderDetails() {
         return tenderService.getAllTenderDetails();
     }

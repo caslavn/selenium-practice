@@ -1,66 +1,242 @@
-{
-  "form": [
-    {
-      "NOTICE.REF": "test simap",
-      "OB.CONT.TYPE": "WORKS",
-      "OB.PROC": "OPEN",
-      "OB.WTO": "NO",
-      "SIMAP.PUB.DATE": "15.10.2021",
-      "AUTH.CONTACT-AUTH.DEMAND": "Olmero AG; Werdstrasse 21; 8004 Zurich",
-      "AUTH.CONTACT-AUTH.CANTONCODE": "Zürich",
-      "AUTH.CONTACT-AUTH.NAME": "Olmero AG",
-      "AUTH.CONTACT-ADDRESS-STREET": "Olmero AG; Werdstrasse 21",
-      "AUTH.CONTACT-ADDRESS-ZIPCODE": 8004,
-      "AUTH.CONTACT-ADDRESS-CITY": "Zurich",
-      "AUTH.CONTACT-ADDRESS-COUNTRY": "Schweiz",
-      "AUTH.CONTACT-ADDRESS-EMAIL": "neil.maitland@olmero.ch",
-      "AUTH.SEND-TYPE": "DOC",
-      "OB01.COND.SEND.DEADLINE-RADIO": "DAYS",
-      "OB01.COND.SEND.DEADLINE.DATE": "15.11.2021",
-      "OB01.COND.OFFER.OPEN.DATE": "30.12.2021",
-      "CONT.NAME": "test project selenium",
-      "DIVISION.INTO.LOT": "NO",
-      "CONT.CPV.LIST": 22000000,
-      "CONT.DESCR": "test",
-      "CONT.LOC": "location",
-      "TIMEFRAME-RADIO": "DATE",
-      "TIMEFRAME-DATE.START":"21.10.2021",
-      "TIMEFRAME-DATE.END": "29.12.2021",
-      "OPTION-RADIO": "NO",
-      "AWARD.CRITERIA-VALUE": "DOCUMENTS",
-      "CONT.VARIANTS": "NO",
-      "CONT.PARTIALS": "NO",
-      "CONT.DEADLINE-RADIO": "DATE",
-      "CONT.DATE.START": "20.11.2021",
-      "CONT.DATE.END": "01.12.2021",
-      "OB01.COND.TECHNICAL-VALUE": "DOCUMENTS",
-      "OB01.COND.PROOF-VALUE": "DOCUMENTS",
-      "LANGUAGE.EC-EN": "EN",
-      "LANGUAGE.PROC.EC-EN": "EN",
-      "OB01.COND.DOC.SIMAP-VALUE": "YES",
-      "OB01.INFO.LEGAL": "Gegen diese Ausschreibung kann innert 10 Tagen; von der Publikation an gerechnet; beim Verwaltungsgericht des Kantons Zürich; Postfach; 8090 Zürich; schriftlich Beschwerde eingereicht werden. Die Beschwerdeschrift ist im Doppel einzureichen. Sie muss einen Antrag und dessen Begründung enthalten. Die angefochtene Ausschreibung ist beizulegen. Die angerufenen Beweismittel sind genau zu bezeichnen und; soweit möglich, beizulegen.",
-      "CONT.WORK.TYPE-TYPE": "EXECUTION",
-      "AUTH.SEND-AUTH.NAME": "Some name",
-      "AUTH.SEND-ADDRESS-STREET": "Street",
-      "AUTH.SEND-ADDRESS-ZIPCODE": 1000,
-      "AUTH.SEND-ADDRESS-CITY": "City",
-      "AUTH.SEND-ADDRESS-COUNTRY": "Schweiz",
-      "AUTH.SEND-ADDRESS-EMAIL": "somemail@gmail.com",
-      "CONT.SUPP.TYPE-TYPE": "HIRE.PURCHASE",
-      "LOT.SUBMIT-TO": "ONE",
-      "LOT.SUBMIT-MAXCOUNT": 2,
-      "LOT.CPV.LIST_1": 22000000,
-      "LOT.DESCR_1": "some descr",
-      "LOT.TIMEFRAME-RADIO": "DATE",
-      "LOT.TIMEFRAME-DATE.START_1": "10.11.2021",
-      "LOT.TIMEFRAME-DATE.END_1": "10.12.2021",
-      "LOT.RENEWAL-RADIO": "NO",
-      "LOT.OPTION-RADIO": "NO",
-      "LOT.AWARD.CRITERIA-VALUE": "DOCUMENTS",
-      "OB01.COND.SEND.DEADLINE.DAYS": 30,
-      "TIMEFRAME-MONTHS": 5,
-      "CONT.MONTHS": 10,
-      "OB01.COND.DOC.ADDRESS-VALUE": "YES"
-    }
-  ]
-}
+[
+  {
+    "field": "OB.CONT.TYPE",
+    "value": "SERVICES"
+  },
+  {
+    "field": "OB.PROC",
+    "value": "OPEN"
+  },
+  {
+    "field": "OB.WTO",
+    "value": "YES"
+  },
+  {
+    "field": "AUTH.CONTACT-AUTH.DEMAND",
+    "value": "Olmero AG, Werdstrasse 21, 8004 Zurich"
+  },
+  {
+    "field": "AUTH.CONTACT-AUTH.NAME",
+    "value": "Olmero AG"
+  },
+  {
+    "field": "AUTH.CONTACT-ADDRESS-STREET",
+    "value": "Olmero AG, Werdstrasse 21"
+  },
+  {
+    "field": "AUTH.CONTACT-ADDRESS-ZIPCODE",
+    "value": "8004"
+  },
+  {
+    "field": "AUTH.CONTACT-ADDRESS-EMAIL",
+    "value": "neil.maitland@olmero.ch"
+  },
+  {
+    "field": "AUTH.SEND-TYPE",
+    "value": "Address according to chapter 1.1"
+  },
+  {
+    "field": "OB01.COND.SEND.DEADLINE-RADIO",
+    "value": "DATE"
+  },
+  {
+    "field": "CONT.CPV.LIST",
+    "value": "63000000, 64000000"
+  },
+  {
+    "field": "CONT.DESCR",
+    "value": "subject and scope"
+  },
+  {
+    "field": "CONT.LOC",
+    "value": "location"
+  },
+  {
+    "field": "TIMEFRAME-RADIO",
+    "value": "DATE"
+  },
+  {
+    "field": "TIMEFRAME-DATE.START",
+    "value": "14.10.2021"
+  },
+  {
+    "field": "TIMEFRAME-DATE.END",
+    "value": "19.11.2021"
+  },
+  {
+    "field": "OPTION-RADIO",
+    "value": "NO"
+  },
+  {
+    "field": "AWARD.CRITERIA-VALUE",
+    "value": "DOCUMENTS"
+  },
+  {
+    "field": "CONT.VARIANTS",
+    "value": "NO"
+  },
+  {
+    "field": "CONT.PARTIALS",
+    "value": "NO"
+  },
+  {
+    "field": "CONT.DEADLINE-RADIO",
+    "value": "DATE"
+  },
+  {
+    "field": "OB01.COND.TECHNICAL-VALUE",
+    "value": "DOCUMENTS"
+  },
+  {
+    "field": "OB01.COND.PROOF-VALUE",
+    "value": "DOCUMENTS"
+  },
+  {
+    "field": "LANGUAGE.EC-DE",
+    "value": "German"
+  },
+  {
+    "field": "LANGUAGE.PROC.EC-DE",
+    "value": "German"
+  },
+  {
+    "field": "OB01.COND.DOC.SIMAP-VALUE",
+    "value": " www.simap.ch (incl. option Standard form bidder data)"
+  },
+  {
+    "field": "OB01.INFO.LEGAL",
+    "value": "Gegen diese Ausschreibung kann innert 10 Tagen, von der Publikation an gerechnet, beim Verwaltungsgericht des Kantons Zürich, Postfach, 8090 Zürich, schriftlich Beschwerde eingereicht werden. Die Beschwerdeschrift ist im Doppel einzureichen. Sie muss einen Antrag und dessen Begründung enthalten. Die angefochtene Ausschreibung ist beizulegen. Die angerufenen Beweismittel sind genau zu bezeichnen und, soweit möglich, beizulegen."
+  },
+  {
+    "field": "NOTICE.REF",
+    "value": "test tender"
+  },
+  {
+    "field": "CONT.NAME",
+    "value": "title"
+  },
+  {
+    "field": "DIVISION.INTO.LOT",
+    "value": "NO"
+  },
+  {
+    "field": "SIMAP.PUB.DATE",
+    "value": "28.12.2021."
+  },
+  {
+    "field": "CONT.WORK.TYPE-TYPE",
+    "value": "EXECUTION"
+  },
+  {
+    "field": "AUTH.SEND-AUTH.NAME",
+    "value": "Some name"
+  },
+  {
+    "field": "AUTH.SEND-ADDRESS-STREET",
+    "value": "Street"
+  },
+  {
+    "field": "AUTH.SEND-ADDRESS-ZIPCODE",
+    "value": "1000"
+  },
+  {
+    "field": "AUTH.SEND-ADDRESS-CITY",
+    "value": "City"
+  },
+  {
+    "field": "AUTH.SEND-ADDRESS-COUNTRY",
+    "value": "Schweiz"
+  },
+  {
+    "field": "AUTH.SEND-ADDRESS-EMAIL",
+    "value": "somemail@gmail.com"
+  },
+  {
+    "field": "CONT.SUPP.TYPE-TYPE",
+    "value": "HIRE.PURCHASE"
+  },
+  {
+    "field": "LOT.SUBMIT-TO",
+    "value": "ONE"
+  },
+  {
+    "field": "LOT.SUBMIT-MAXCOUNT",
+    "value": "2"
+  },
+  {
+    "field": "LOT.CPV.LIST_1",
+    "value": "22000000"
+  },
+  {
+    "field": "LOT.DESCR_1",
+    "value": "some descr"
+  },
+  {
+    "field": "LOT.TIMEFRAME-RADIO",
+    "value": "DATE"
+  },
+  {
+    "field": "LOT.TIMEFRAME-DATE.START_1",
+    "value": "10.02.2022"
+  },
+  {
+    "field": "LOT.TIMEFRAME-DATE.END_1",
+    "value": "10.03.2022"
+  },
+  {
+    "field": "LOT.RENEWAL-RADIO",
+    "value": "NO"
+  },
+  {
+    "field": "LOT.OPTION-RADIO",
+    "value": "NO"
+  },
+  {
+    "field": "LOT.AWARD.CRITERIA-VALUE",
+    "value": "DOCUMENTS"
+  },
+  {
+    "field": "OB01.COND.SEND.DEADLINE.DAYS",
+    "value": "30"
+  },
+  {
+    "field": "TIMEFRAME-MONTHS",
+    "value": "5"
+  },
+  {
+    "field": "CONT.MONTHS",
+    "value": "10"
+  },
+  {
+    "field": "OB01.COND.DOC.ADDRESS-VALUE",
+    "value": "YES"
+  },
+  {
+    "field": "AUTH.CONTACT-ADDRESS-CITY",
+    "value": "Zürich"
+  },
+  {
+    "field": "AUTH.CONTACT-AUTH.CANTONCODE",
+    "value": "Zürich"
+  },
+  {
+    "field": "OB01.COND.SEND.DEADLINE.DATE",
+    "value": "20.02.2022."
+  },
+  {
+    "field": "OB01.COND.OFFER.OPEN.DATE",
+    "value": "25.02.2022."
+  },
+  {
+    "field": "AUTH.CONTACT-ADDRESS-COUNTRY",
+    "value": "Schweiz"
+  },
+  {
+    "field": "CONT.DATE.START",
+    "value": "30.03.2022"
+  },
+  {
+    "field": "CONT.DATE.END",
+    "value": "29.04.2022"
+  }
+]
