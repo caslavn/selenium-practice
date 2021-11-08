@@ -1,7 +1,6 @@
 package com.example.seleniumpractice.readfactory;
 
 import com.example.seleniumpractice.dto.TenderDetailsDTO;
-import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ import java.util.List;
 public class JsonRead implements ReadingOperation {
 
 
-    JSONArray simapJson = new JSONArray();
+
 
     @Override
     public String getType() {
@@ -30,11 +29,11 @@ public class JsonRead implements ReadingOperation {
     public List<TenderDetailsDTO> read() {
 
         JSONParser jsonParser = new JSONParser();
+        Object obj = new Object();
 
         try(FileReader reader = new FileReader("/home/dev555/IdeaProjects/selenium-practice/jsonfiles/simap.json")) {
 
-            Object obj = jsonParser.parse(reader);
-            simapJson.add(obj);
+            obj = jsonParser.parse(reader);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -43,6 +42,6 @@ public class JsonRead implements ReadingOperation {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return simapJson;
+        return (List<TenderDetailsDTO>) obj;
     }
 }

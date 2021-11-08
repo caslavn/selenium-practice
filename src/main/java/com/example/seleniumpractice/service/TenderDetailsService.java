@@ -17,20 +17,16 @@ public class TenderDetailsService {
     public List<TenderDetailsDTO> getAllTenderDetails() {
 
         List<TenderDetailsDTO> tenderDTOList = new ArrayList<>();
-        //Tender tender = tenderRepository.findOneById(id);
-        //TenderDetails tender = tenderDetailsRepository.findOneById(id);
 
         tenderDetailsRepository.findAll().forEach(tenderDetails -> {
             TenderDetailsDTO tenderDetailsDTO = new TenderDetailsDTO(tenderDetails);
-
-            tenderDetails.getTender().getId();
-            //tenderDetailsDTO.setClient_id(tenderDetails.getTender().getClient().getId());
-            //tenderDetailsDTO.setUsername(tenderDetails.getTender().getClient().getUsername());
-
-
             tenderDTOList.add(tenderDetailsDTO);
         });
         return tenderDTOList;
+    }
+
+    public List<TenderDetailsDTO> getTenderDetailsById(Integer tender_id) {
+        return tenderDetailsRepository.findOneById(tender_id);
     }
 
 

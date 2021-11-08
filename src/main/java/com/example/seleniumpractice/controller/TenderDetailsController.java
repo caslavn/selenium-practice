@@ -1,9 +1,11 @@
 package com.example.seleniumpractice.controller;
 
-import com.example.seleniumpractice.dto.TenderDTO;
 import com.example.seleniumpractice.dto.TenderDetailsDTO;
+import com.example.seleniumpractice.model.TenderQueue;
 import com.example.seleniumpractice.readfactory.ReadingFactory;
-import com.example.seleniumpractice.service.TenderService;
+import com.example.seleniumpractice.repository.TenderDetailsRepository;
+import com.example.seleniumpractice.service.TenderDetailsService;
+import com.example.seleniumpractice.service.TenderQueueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,19 +19,27 @@ import java.util.List;
 public class TenderDetailsController {
 
     @Autowired
-    TenderService tenderService;
-    @Autowired
     ReadingFactory readingFactory;
+    @Autowired
+    TenderDetailsRepository tenderDetailsRepository;
+    @Autowired
+    TenderDetailsService tenderDetailsService;
+    @Autowired
+    TenderQueueService tenderQueueService;
 
-    @GetMapping("/details")
-    public List<TenderDetailsDTO> getAllTenderDetails(@RequestParam(value = "id", required = false) Integer id) {
-
+    @GetMapping("/allDetails")
+    public List<TenderDetailsDTO> getAllTenderDetails() {
         return readingFactory.getRead();
     }
 
-    @GetMapping
-    public List<TenderDTO> getAllTenderDetails() {
-        return tenderService.getAllTenderDetails();
+    @GetMapping("/detailsById")
+    public List<TenderDetailsDTO> getTenderById(@RequestParam(value = "tender_id") Integer tender_id) {
+        return tenderDetailsService.getTenderDetailsById(tender_id);
+    }
+
+    @GetMapping("/tenderQueue")
+    public List<TenderQueue> getTender() {
+        return tenderQueueService.getQueue();
     }
 
 

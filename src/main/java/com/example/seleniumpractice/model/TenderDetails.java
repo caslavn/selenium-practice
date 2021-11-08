@@ -12,6 +12,9 @@ public class TenderDetails implements Serializable {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "tender_id", insertable = false, updatable = false)
+    private Integer tender_id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tender_id")
     Tender tender;
@@ -36,6 +39,14 @@ public class TenderDetails implements Serializable {
 
     public void setTender(Tender tender) {
         this.tender = tender;
+    }
+
+    public Integer getTender_id() {
+        return tender_id;
+    }
+
+    public void setTender_id(Integer tender_id) {
+        this.tender_id = tender_id;
     }
 
     public String getField() {
