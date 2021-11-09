@@ -30,11 +30,11 @@ public class QueueConsumerModuleService implements QueueConsumerModule<Integer>{
 
 
     @Override
-    public List<Long> findItemIdsWhereQueueingNextAttemptTimeIsBefore(LocalDateTime time, int limit) {
+    public List<Long> findItemIdsWhereStatusIsPending(LocalDateTime time, int limit) {
 
         return this.entityManager.createQuery(
-                        "SELECT tq.id from com.example.seleniumpractice.model.TenderQueue tq where tq.queueingState.created_at < :currentTime order by tq.queueingState.created_at asc")
-                .setParameter("currentTime", time)
+                "SELECT tq.id from com.example.seleniumpractice.model.TenderQueue tq where tq.queueingState.status = 'PENDING'" +
+                        " and tq.queueingState.deleted='false' order by tq.queueingState.created_at asc")
                 .setMaxResults(limit)
                 .getResultList();
     }

@@ -4,7 +4,6 @@ import com.example.seleniumpractice.login.LoginPF;
 import com.example.seleniumpractice.model.TenderDetails;
 import com.example.seleniumpractice.pages.*;
 import io.restassured.RestAssured;
-
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.log4j.PropertyConfigurator;
@@ -13,6 +12,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import javax.annotation.PostConstruct;
 
 
 public class TestPF {
@@ -28,6 +29,12 @@ public class TestPF {
     PageSeven objPageSeven;
     PageEight objPageEight;
 
+    @PostConstruct
+    public void init() {
+        setup();
+        testForm();
+    }
+
     @BeforeTest
     public void setup() {
         PropertyConfigurator.configure("src/main/resources/log4j.properties");
@@ -42,7 +49,7 @@ public class TestPF {
     @Test
     public void testForm() {
 
-        Response response = RestAssured.get("http://localhost:8080/api/tender");
+        Response response = RestAssured.get("http://localhost:8080/api/tender/detailsById");
         //System.out.println("Status code is: " +response.getStatusCode());
         //System.out.println(response.asPrettyString());
         TenderDetails[] tenders = response.jsonPath().getObject("", TenderDetails[].class);

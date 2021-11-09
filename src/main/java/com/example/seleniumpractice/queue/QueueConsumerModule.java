@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface QueueConsumerModule<Integer> {
 
-    List<Long> findItemIdsWhereQueueingNextAttemptTimeIsBefore(LocalDateTime time, int limit);
+    List<Long> findItemIdsWhereStatusIsPending(LocalDateTime time, int limit);
 
     Optional<QueueingState> getQueueingStateForItem(Integer itemId);
 

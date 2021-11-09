@@ -1,6 +1,7 @@
 package com.example.seleniumpractice.queue;
 
 import com.example.seleniumpractice.model.QueueingState;
+import com.example.seleniumpractice.test.TestPF;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -78,7 +79,7 @@ public class QueueConsumer {
     public void processQueuedItems() {
         try {
             LocalDateTime now = LocalDateTime.now();
-            List<?> itemIds = this.queueConsumerModule.findItemIdsWhereQueueingNextAttemptTimeIsBefore(now, itemsPollSize);
+            List<?> itemIds = this.queueConsumerModule.findItemIdsWhereStatusIsPending(now, itemsPollSize);
 
             if (!itemIds.isEmpty()) {
                 logger.info("Fetched {} pending queued items", itemIds.size());
@@ -110,8 +111,10 @@ public class QueueConsumer {
 
     public void processItem(Object itemId) {
         Optional<QueueingState> queueingStateOptional = this.queueConsumerModule.processItem(itemId);
+        TestPF testPF = new TestPF();
         if (queueingStateOptional.isPresent()) {
             queueingStateOptional.get().registerAttemptSuccess(LocalDateTime.now());
+            testPF.init();
         } else {
             logger.warn("No queued item found under ID {} to process it", itemId);
         }
@@ -125,13 +128,13 @@ public class QueueConsumer {
             QueueingState queueingState = queueingStateOptional.get();
             queueingState.registerAttemptFailure(LocalDateTime.now(), error);
 
-            // Optional<LocalDateTime> retryAttemptTimeOptional = retryPolicy.calculateNextAttemptTime(queueingState.getLastAttemptTime(), queueingState.getAttemptCount());
-            //if (retryAttemptTimeOptional.isPresent()) {
-            //  LocalDateTime nextAttemptTime = retryAttemptTimeOptional.get();
-            // logger.info("Retry for item by ID {} scheduled for time: {}", itemId, nextAttemptTime);
-            //queueingState.scheduleNextAttempt(nextAttemptTime);
-            // } else {
-            //logger.warn("No retry scheduled for item by ID {}", itemId);
+             /*Optional<LocalDateTime> retryAttemptTimeOptional = retryPolicy.calculateNextAttemptTime(queueingState.getLastAttemptTime(), queueingState.getAttemptCount());
+            if (retryAttemptTimeOptional.isPresent()) {
+              LocalDateTime nextAttemptTime = retryAttemptTimeOptional.get();
+             logger.info("Retry for item by ID {} scheduled for time: {}", itemId, nextAttemptTime);
+            queueingState.scheduleNextAttempt(nextAttemptTime);
+             } else {
+            logger.warn("No retry scheduled for item by ID {}", itemId);*/
         }
         // } else {
         //logger.warn("No queued item found under ID {} to register failed attempt", itemId);

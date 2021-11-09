@@ -56,6 +56,7 @@ public class QueueingState {
     public void registerAttemptSuccess(LocalDateTime time) {
         this.created_at = Objects.requireNonNull(created_at);
         this.last_updated = Objects.requireNonNull(time);
+        this.deleted = Objects.requireNonNull(true);
 
         this.status = Status.SUCCESS;
     }
