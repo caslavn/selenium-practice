@@ -29,8 +29,12 @@ public class QueueingState {
     @Column(name = "deleted")
     public Boolean deleted;
 
+    @Column(name = "attempt_count")
+    private int attempt_count;
+
     public QueueingState() {
         this.status = Status.PENDING;
+        this.attempt_count = 0;
     }
 
     public Status getStatus() {
@@ -49,11 +53,12 @@ public class QueueingState {
         return deleted;
     }
 
-    public void scheduleNextAttempt(LocalDateTime created_at) {
-        this.created_at = Objects.requireNonNull(created_at);
+    public int getAttempt_count() {
+        return attempt_count;
     }
 
     public void registerAttemptSuccess(LocalDateTime time) {
+        this.attempt_count++;
         this.created_at = Objects.requireNonNull(created_at);
         this.last_updated = Objects.requireNonNull(time);
         this.deleted = Objects.requireNonNull(true);
@@ -62,10 +67,14 @@ public class QueueingState {
     }
 
     public void registerAttemptFailure(LocalDateTime time, Throwable error) {
+        this.attempt_count++;
         this.created_at = Objects.requireNonNull(created_at);
         this.last_updated = Objects.requireNonNull(time);
 
-        this.status = Status.ERROR;
+        if (attempt_count == 2) {
+            this.status = Status.ERROR;
+            this.deleted= true;
+        }
     }
 
 }

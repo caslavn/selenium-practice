@@ -78,8 +78,7 @@ public class QueueConsumer {
 
     public void processQueuedItems() {
         try {
-            LocalDateTime now = LocalDateTime.now();
-            List<?> itemIds = this.queueConsumerModule.findItemIdsWhereStatusIsPending(now, itemsPollSize);
+            List<?> itemIds = this.queueConsumerModule.findItemIdsWhereStatusIsPending(itemsPollSize);
 
             if (!itemIds.isEmpty()) {
                 logger.info("Fetched {} pending queued items", itemIds.size());
@@ -127,17 +126,6 @@ public class QueueConsumer {
         if (queueingStateOptional.isPresent()) {
             QueueingState queueingState = queueingStateOptional.get();
             queueingState.registerAttemptFailure(LocalDateTime.now(), error);
-
-             /*Optional<LocalDateTime> retryAttemptTimeOptional = retryPolicy.calculateNextAttemptTime(queueingState.getLastAttemptTime(), queueingState.getAttemptCount());
-            if (retryAttemptTimeOptional.isPresent()) {
-              LocalDateTime nextAttemptTime = retryAttemptTimeOptional.get();
-             logger.info("Retry for item by ID {} scheduled for time: {}", itemId, nextAttemptTime);
-            queueingState.scheduleNextAttempt(nextAttemptTime);
-             } else {
-            logger.warn("No retry scheduled for item by ID {}", itemId);*/
         }
-        // } else {
-        //logger.warn("No queued item found under ID {} to register failed attempt", itemId);
-        //}
     }
 }

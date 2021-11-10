@@ -6,7 +6,6 @@ import com.example.seleniumpractice.repository.TenderQueueRepository;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,6 @@ public class QueueConsumerModuleService implements QueueConsumerModule<Integer>{
 
 
     private final TenderQueueRepository tenderQueueRepository;
-    //private final TenderQueue tenderQueue;
     private final EntityManager entityManager;
 
     public QueueConsumerModuleService(TenderQueueRepository tenderQueueRepository, EntityManager entityManager) {
@@ -23,14 +21,10 @@ public class QueueConsumerModuleService implements QueueConsumerModule<Integer>{
         this.entityManager = entityManager;
     }
 
-    //public QueueConsumerModuleService(TenderQueue tenderQueue, TenderQueueRepository tenderQueueRepository) {
-    //this.tenderQueue = tenderQueue;
-    // this.tenderQueueRepository = tenderQueueRepository;
-    // }
 
 
     @Override
-    public List<Long> findItemIdsWhereStatusIsPending(LocalDateTime time, int limit) {
+    public List<Long> findItemIdsWhereStatusIsPending(int limit) {
 
         return this.entityManager.createQuery(
                 "SELECT tq.id from com.example.seleniumpractice.model.TenderQueue tq where tq.queueingState.status = 'PENDING'" +
@@ -49,8 +43,6 @@ public class QueueConsumerModuleService implements QueueConsumerModule<Integer>{
         Optional<TenderQueue> tenderQueueOptional = this.tenderQueueRepository.findById(itemId);
         if (tenderQueueOptional.isPresent()){
             TenderQueue tenderQueue  = tenderQueueOptional.get();
-
-            // this.tenderQueue.getTender().getTenderQueue();
 
             return Optional.of(tenderQueue.getQueueingState());
         }else {

@@ -16,8 +16,6 @@ public class SeleniumPracticeApplication {
 
 	@Bean
 	public QueueConsumer queueConsumerModuleServiceBean(QueueConsumerModuleService queueConsumerModuleService, PlatformTransactionManager transactionManager) {
-		//RetryPolicy retryPolicy = new ExponentialDelayRetryPolicy(Duration.ofMinutes(1), 2);
-		//RetryPolicy retryPolicy = new LimitedRetryPolicy(3, new FixedDelayRetryPolicy(Duration.ofMinutes(1)));
 		return new QueueConsumer(queueConsumerModuleService, transactionManager, 5, 5);
 	}
 
